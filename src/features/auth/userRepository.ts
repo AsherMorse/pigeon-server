@@ -33,7 +33,6 @@ export const userRepository = {
         email: userData.email,
         password: userData.hashedPassword,
         isVerified: true,
-        // Default tokenVersion is 0 from schema definition
       })
       .returning({
         id: users.id,
@@ -46,7 +45,7 @@ export const userRepository = {
     return user;
   },
 
-  incrementTokenVersion: async (userId: number) => {
+  incrementTokenVersion: async (userId: string) => {
     return await db
       .update(users)
       .set({
@@ -56,7 +55,18 @@ export const userRepository = {
       .returning();
   },
 
-  storeRefreshToken: async (userId: number, token: string, expiresAt: Date) => {
+  storeRefreshToken: async (userId: string, token: string, expiresAt: Date) => {
+    const existingToken = await db.query.refreshTokens.findFirst({
+      where: eq(refreshTokens.token, token),
+    });
+
+    if (existingToken) {
+      await db
+        .update(refreshTokens)
+        .set({ isValid: false })
+        .where(eq(refreshTokens.token, token));
+    }
+
     await db.insert(refreshTokens).values({
       userId,
       token,
@@ -82,7 +92,7 @@ export const userRepository = {
     });
   },
 
-  updateVerification: async (userId: number) => {
+  updateVerification: async (userId: string) => {
     await db
       .update(users)
       .set({
@@ -91,7 +101,7 @@ export const userRepository = {
       .where(eq(users.id, userId));
   },
 
-  updatePassword: async (userId: number, hashedPassword: string) => {
+  updatePassword: async (userId: string, hashedPassword: string) => {
     await db
       .update(users)
       .set({
