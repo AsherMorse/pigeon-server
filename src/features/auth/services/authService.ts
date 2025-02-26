@@ -85,7 +85,8 @@ export const authService = {
       return { success: true };
     }
 
-    await userRepository.incrementTokenVersion(payload.userId);
+    // Implements global logout
+    // await userRepository.incrementTokenVersion(payload.userId);
 
     const result = await userRepository.invalidateRefreshToken(refreshToken);
 
