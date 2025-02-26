@@ -1,18 +1,18 @@
 import bcrypt from "bcrypt";
-import { userRepository } from "../repositories/userRepository";
-import { jwtConfig } from "../../../config/jwt";
-import type {
-  RegisterDTO,
-  LoginDTO,
-  LogoutDTO,
-  RefreshTokenDTO,
-} from "../types/authTypes";
-import { AppError } from "../../../shared/middleware/errorHandler";
+import {
+  userRepository,
+  type RegisterDTO,
+  type LoginDTO,
+  type LogoutDTO,
+  type RefreshTokenDTO,
+} from "@auth";
+import { jwtConfig } from "@config/jwt";
+import { AppError } from "@shared/middleware/errorHandler";
 import { eq } from "drizzle-orm";
-import { db } from "../../../config/database";
-import { users } from "../../../db/schema";
+import { db } from "@config/database";
+import { users } from "@db/schema";
 
-export const authService = {
+export const service = {
   register: async (data: RegisterDTO) => {
     const existingUser = await userRepository.findByEmailOrUsername(data.email);
     if (existingUser) {

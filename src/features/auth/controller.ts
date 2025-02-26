@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { authService } from "../services/authService";
-import { authValidator } from "../validators/authValidator";
-import { asyncErrorHandler } from "../../../shared/utils";
+import { service, validator } from "@auth";
+import { asyncErrorHandler } from "@shared/utils";
 
-export const authController = {
+export const controller = {
   register: asyncErrorHandler(async (req: Request, res: Response) => {
-    const data = authValidator.register.parse(req.body);
-    const result = await authService.register(data);
+    const data = validator.register.parse(req.body);
+    const result = await service.register(data);
 
     res.status(201).json({
       status: "success",
@@ -16,8 +15,8 @@ export const authController = {
   }),
 
   login: asyncErrorHandler(async (req: Request, res: Response) => {
-    const data = authValidator.login.parse(req.body);
-    const result = await authService.login(data);
+    const data = validator.login.parse(req.body);
+    const result = await service.login(data);
 
     res.json({
       status: "success",
@@ -26,8 +25,8 @@ export const authController = {
   }),
 
   logout: asyncErrorHandler(async (req: Request, res: Response) => {
-    const data = authValidator.logout.parse(req.body);
-    await authService.logout(data);
+    const data = validator.logout.parse(req.body);
+    await service.logout(data);
 
     res.json({
       status: "success",
@@ -36,8 +35,8 @@ export const authController = {
   }),
 
   refreshToken: asyncErrorHandler(async (req: Request, res: Response) => {
-    const data = authValidator.refreshToken.parse(req.body);
-    const result = await authService.refreshToken(data);
+    const data = validator.refreshToken.parse(req.body);
+    const result = await service.refreshToken(data);
 
     res.json({
       status: "success",

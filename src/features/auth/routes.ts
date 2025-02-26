@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { authController } from "./controllers/authController";
-import { requireAuth } from "../../shared/middleware/auth";
+import { controller } from "@auth/controller";
+import { requireAuth } from "@shared/middleware/auth";
 
-export const authRoutes = Router();
+export const routes = Router();
 
 /**
  * @swagger
@@ -33,7 +33,7 @@ export const authRoutes = Router();
  *       400:
  *         description: Invalid input
  */
-authRoutes.post("/register", authController.register);
+routes.post("/register", controller.register);
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ authRoutes.post("/register", authController.register);
  *       401:
  *         description: Invalid credentials
  */
-authRoutes.post("/login", authController.login);
+routes.post("/login", controller.login);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ authRoutes.post("/login", authController.login);
  *       400:
  *         description: Invalid token
  */
-authRoutes.post("/logout", authController.logout);
+routes.post("/logout", controller.logout);
 
 /**
  * @swagger
@@ -129,7 +129,7 @@ authRoutes.post("/logout", authController.logout);
  *       401:
  *         description: Invalid or expired refresh token
  */
-authRoutes.post("/refresh", authController.refreshToken);
+routes.post("/refresh", controller.refreshToken);
 
 /**
  * @swagger
@@ -145,8 +145,7 @@ authRoutes.post("/refresh", authController.refreshToken);
  *       401:
  *         description: Unauthorized - invalid or expired session
  */
-// Session validation route
-authRoutes.get("/session", requireAuth, (req, res) => {
+routes.get("/session", requireAuth, (req, res) => {
   res.json({
     status: "success",
     message: "Session is valid",
@@ -154,4 +153,4 @@ authRoutes.get("/session", requireAuth, (req, res) => {
   });
 });
 
-export default authRoutes;
+export default routes;

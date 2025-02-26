@@ -1,7 +1,7 @@
 import { eq, or, and, gt } from "drizzle-orm";
-import { db } from "../../../config/database";
-import type { RegisterDTO } from "../types/authTypes";
-import { refreshTokens, users } from "../../../db/schema";
+import { db } from "@config/database";
+import type { RegisterDTO } from "@auth";
+import { refreshTokens, users } from "@db/schema";
 import { sql } from "drizzle-orm";
 
 export const userRepository = {
