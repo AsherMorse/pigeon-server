@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
-
 import {
   userRepository,
   type RegisterDTO,
@@ -8,12 +7,9 @@ import {
   type LogoutDTO,
   type RefreshTokenDTO,
 } from '@auth';
-
 import { db } from '@config/database';
 import { jwtConfig } from '@config/jwt';
-
 import { AppError } from '@shared/middleware/errorHandler';
-
 import { users } from '@db/schema';
 
 export const service = {

@@ -4,11 +4,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
-
 import { routes } from '@auth';
-
 import { swaggerSpec } from '@config/swagger';
-
 import { errorHandler } from '@shared/middleware';
 
 dotenv.config();

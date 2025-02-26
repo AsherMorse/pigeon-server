@@ -1,6 +1,6 @@
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-import crypto from 'crypto';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET!;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;

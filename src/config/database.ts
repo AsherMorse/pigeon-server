@@ -1,5 +1,4 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-
 import 'dotenv/config';
 import { refreshTokens, users } from '@db/schema';
 

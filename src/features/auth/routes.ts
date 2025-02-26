@@ -1,7 +1,5 @@
 import { Router } from 'express';
-
 import { controller } from '@auth';
-
 import { requireAuth } from '@shared/middleware';
 
 export const routes = Router();

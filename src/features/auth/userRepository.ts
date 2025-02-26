@@ -1,9 +1,7 @@
 import { eq, or, and, gt, sql } from 'drizzle-orm';
-
 import { db } from '@config/database';
-
+import { AppError } from '@shared/middleware/errorHandler';
 import { refreshTokens, users } from '@db/schema';
-
 import type { RegisterDTO } from '@auth';
 
 export const userRepository = {
@@ -56,22 +54,21 @@ export const userRepository = {
   },
 
   storeRefreshToken: async (userId: string, token: string, expiresAt: Date) => {
-    const existingToken = await db.query.refreshTokens.findFirst({
-      where: eq(refreshTokens.token, token),
-    });
+    try {
+      await db.insert(refreshTokens).values({
+        userId,
+        token,
+        expiresAt,
+      });
+    } catch (error) {
+      const pgError = error as { code?: string; constraint?: string };
 
-    if (existingToken) {
-      await db
-        .update(refreshTokens)
-        .set({ isValid: false })
-        .where(eq(refreshTokens.token, token));
+      if (pgError.code === '23505' && pgError.constraint === 'refresh_tokens_token_unique') {
+        throw new AppError(401, 'Session already exists. Please try again.');
+      }
+
+      throw error;
     }
-
-    await db.insert(refreshTokens).values({
-      userId,
-      token,
-      expiresAt,
-    });
   },
 
   invalidateRefreshToken: async (token: string) => {
