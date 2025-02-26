@@ -24,7 +24,7 @@ export const authService = {
       hashedPassword,
     });
 
-    const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id);
+    const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
 
     await userRepository.storeRefreshToken(
       user.id,
@@ -54,7 +54,7 @@ export const authService = {
       throw new AppError(401, "Invalid credentials");
     }
 
-    const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id);
+    const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
 
     await userRepository.storeRefreshToken(
       user.id,
@@ -76,18 +76,20 @@ export const authService = {
   logout: async (data: LogoutDTO) => {
     const { refreshToken } = data;
 
-    // Verify that the token format is valid before attempting to invalidate
     if (!refreshToken || typeof refreshToken !== 'string') {
       throw new AppError(400, "Invalid refresh token");
     }
 
-    // Invalidate the refresh token
+    const payload = jwtConfig.verifyRefreshToken(refreshToken);
+    if (!payload) {
+      return { success: true };
+    }
+
+    await userRepository.incrementTokenVersion(payload.userId);
+
     const result = await userRepository.invalidateRefreshToken(refreshToken);
 
-    // If the token wasn't found, it may already be invalid or never existed
     if (!result || result.length === 0) {
-      // We don't reveal if the token existed or not to prevent information leakage
-      // Just return success
       return { success: true };
     }
 
@@ -97,37 +99,35 @@ export const authService = {
   refreshToken: async (data: RefreshTokenDTO) => {
     const { refreshToken } = data;
 
-    // Verify that the token format is valid
     if (!refreshToken || typeof refreshToken !== 'string') {
       throw new AppError(400, "Invalid refresh token");
     }
 
-    // First verify the token using JWT
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
       throw new AppError(401, "Invalid or expired refresh token");
     }
 
-    // Then check if the token exists in the database and is still valid
     const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
     if (!tokenRecord) {
       throw new AppError(401, "Invalid or expired refresh token");
     }
 
-    // Invalidate the current refresh token to prevent reuse
     await userRepository.invalidateRefreshToken(refreshToken);
 
-    // Generate new tokens
-    const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(payload.userId);
+    const updatedUser = await userRepository.incrementTokenVersion(payload.userId);
 
-    // Store the new refresh token
+    const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(
+      payload.userId,
+      updatedUser[0].tokenVersion
+    );
+
     await userRepository.storeRefreshToken(
       payload.userId,
       newRefreshToken,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     );
 
-    // Return the new tokens
     return {
       accessToken,
       refreshToken: newRefreshToken,

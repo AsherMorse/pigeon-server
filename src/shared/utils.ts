@@ -23,7 +23,6 @@ export const asyncErrorHandler = (
     try {
       await routeHandler(request, response, next);
     } catch (error) {
-      // Forward error to Express error handling middleware
       next(error);
     }
   };

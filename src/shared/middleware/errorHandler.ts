@@ -13,7 +13,6 @@ export class AppError extends Error {
   }
 }
 
-// Helper function to format Zod validation errors
 const formatZodError = (error: ZodError) => {
   const firstError = error.errors[0];
 
@@ -40,7 +39,6 @@ export const errorHandler = (
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 
-  // Handle Zod validation errors
   if (err instanceof ZodError) {
     const formattedError = formatZodError(err);
     return res.status(400).json({
@@ -54,7 +52,6 @@ export const errorHandler = (
     });
   }
 
-  // Handle custom application errors
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       status: "error",
@@ -63,7 +60,6 @@ export const errorHandler = (
     });
   }
 
-  // Handle unknown errors
   return res.status(500).json({
     status: "error",
     message:
