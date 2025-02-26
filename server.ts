@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import "./src/shared/middleware/auth";
 import { errorHandler } from "@shared/middleware/errorHandler";
-import authRoutes from "@/features/auth/routes";
+import { routes } from "@auth";
 import { swaggerSpec } from "@config/swagger";
 
 dotenv.config();
@@ -27,7 +27,7 @@ app.use(passport.initialize());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", routes);
 
 app.use(errorHandler);
 
