@@ -4,8 +4,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
-import "./src/shared/middleware/auth";
-import { errorHandler } from "@shared/middleware/errorHandler";
+import { errorHandler } from "@shared";
 import { routes } from "@auth";
 import { swaggerSpec } from "@config/swagger";
 

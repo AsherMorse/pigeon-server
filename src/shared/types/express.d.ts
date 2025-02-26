@@ -6,5 +6,3 @@ declare global {
     interface User extends InferSelectModel<typeof users> { }
   }
 }
-
-export { };

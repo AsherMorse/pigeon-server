@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { service, validator } from "@auth";
-import { asyncErrorHandler } from "@shared/utils";
+import { asyncErrorHandler } from "@shared";
 
 export const controller = {
   register: asyncErrorHandler(async (req: Request, res: Response) => {

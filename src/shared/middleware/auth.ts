@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@config/database";
 import type { TokenPayload } from "@auth";
 import { users } from "@db/schema";
-import { AppError } from "./errorHandler";
+import { AppError } from "@shared/middleware/errorHandler";
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

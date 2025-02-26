@@ -1,6 +1,6 @@
-export { controller } from './controller';
-export { service } from './service';
-export { validator } from './validator';
-export { routes } from './routes';
-export * from './types';
-export { userRepository } from './userRepository'; 
+export { controller } from "@auth/controller";
+export { service } from "@auth/service";
+export { validator } from "@auth/validator";
+export { routes } from "@auth/routes";
+export * from "@auth/types";
+export { userRepository } from "@auth/userRepository";
