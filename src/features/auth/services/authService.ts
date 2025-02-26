@@ -8,6 +8,9 @@ import type {
   RefreshTokenDTO,
 } from "../types/authTypes";
 import { AppError } from "../../../shared/middleware/errorHandler";
+import { eq } from "drizzle-orm";
+import { db } from "../../../config/database";
+import { users } from "../../../db/schema";
 
 export const authService = {
   register: async (data: RegisterDTO) => {
@@ -110,6 +113,14 @@ export const authService = {
 
     const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
     if (!tokenRecord) {
+      throw new AppError(401, "Invalid or expired refresh token");
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, payload.userId),
+    });
+
+    if (!user || user.tokenVersion !== payload.tokenVersion) {
       throw new AppError(401, "Invalid or expired refresh token");
     }
 
