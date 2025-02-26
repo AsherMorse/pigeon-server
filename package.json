@@ -6,9 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsx server.ts",
-    "dev": "nodemon server.ts",
+    "dev": "nodemon --exec tsx server.ts",
     "db:generate": "drizzle-kit generate",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "lint": "eslint \"**/*.{ts,js}\" --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"eslint.config.js\"",
+    "lint:fix": "eslint \"**/*.{ts,js}\" --fix --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"eslint.config.js\"",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\""
   },
   "keywords": [],
   "author": "",
@@ -36,6 +40,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -45,11 +50,20 @@
     "@types/pg": "^8.10.9",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
     "drizzle-kit": "^0.30.5",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-typescript": "^3.8.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
     "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2",
+    "prettier": "^3.5.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.25.0"
   },
   "overrides": {
     "esbuild": "^0.25.0"

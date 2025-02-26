@@ -1,10 +1,15 @@
-import passport from "passport";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { eq } from "drizzle-orm";
-import { db } from "@config/database";
-import type { TokenPayload } from "@auth";
-import { users } from "@db/schema";
-import { AppError } from "@shared/middleware/errorHandler";
+import { eq } from 'drizzle-orm';
+import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+
+import { db } from '@config/database';
+
+import { AppError } from '@shared/middleware/errorHandler';
+
+import { users } from '@db/schema';
+
+import type { TokenPayload } from '@auth';
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -23,30 +28,34 @@ passport.use(
       }
 
       if (user.tokenVersion !== payload.tokenVersion) {
-        return done(new AppError(401, "Token invalidated"), false);
+        return done(new AppError(401, 'Token invalidated'), false);
       }
 
       return done(null, user);
     } catch (error) {
       return done(error, false);
     }
-  })
+  }),
 );
 
-export const requireAuth = (req: any, res: any, next: any) => {
-  passport.authenticate("jwt", { session: false }, (err: any, user: any) => {
-    if (err) {
-      if (err instanceof AppError) {
-        return next(err);
+export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate(
+    'jwt',
+    { session: false },
+    (err: Error | null, user: Express.User | false) => {
+      if (err) {
+        if (err instanceof AppError) {
+          return next(err);
+        }
+        return next(new AppError(500, 'Internal server error'));
       }
-      return next(new AppError(500, "Internal server error"));
-    }
 
-    if (!user) {
-      return next(new AppError(401, "Unauthorized"));
-    }
+      if (!user) {
+        return next(new AppError(401, 'Unauthorized'));
+      }
 
-    req.user = user;
-    next();
-  })(req, res, next);
+      req.user = user;
+      next();
+    },
+  )(req, res, next);
 };

@@ -1,22 +1,26 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
+import { eq } from 'drizzle-orm';
+
 import {
   userRepository,
   type RegisterDTO,
   type LoginDTO,
   type LogoutDTO,
   type RefreshTokenDTO,
-} from "@auth";
-import { jwtConfig } from "@config/jwt";
-import { AppError } from "@shared/middleware/errorHandler";
-import { eq } from "drizzle-orm";
-import { db } from "@config/database";
-import { users } from "@db/schema";
+} from '@auth';
+
+import { db } from '@config/database';
+import { jwtConfig } from '@config/jwt';
+
+import { AppError } from '@shared/middleware/errorHandler';
+
+import { users } from '@db/schema';
 
 export const service = {
   register: async (data: RegisterDTO) => {
     const existingUser = await userRepository.findByEmailOrUsername(data.email);
     if (existingUser) {
-      const field = existingUser.email === data.email ? "email" : "username";
+      const field = existingUser.email === data.email ? 'email' : 'username';
       throw new AppError(409, `This ${field} is already registered`);
     }
 
@@ -32,7 +36,7 @@ export const service = {
     await userRepository.storeRefreshToken(
       user.id,
       refreshToken,
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
 
     return {
@@ -49,12 +53,12 @@ export const service = {
   login: async (data: LoginDTO) => {
     const user = await userRepository.findByEmailOrUsername(data.credential);
     if (!user) {
-      throw new AppError(401, "Invalid credentials");
+      throw new AppError(401, 'Invalid credentials');
     }
 
     const isValidPassword = await bcrypt.compare(data.password, user.password);
     if (!isValidPassword) {
-      throw new AppError(401, "Invalid credentials");
+      throw new AppError(401, 'Invalid credentials');
     }
 
     const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
@@ -62,7 +66,7 @@ export const service = {
     await userRepository.storeRefreshToken(
       user.id,
       refreshToken,
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
 
     return {
@@ -80,7 +84,7 @@ export const service = {
     const { refreshToken } = data;
 
     if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, "Invalid refresh token");
+      throw new AppError(400, 'Invalid refresh token');
     }
 
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
@@ -103,17 +107,17 @@ export const service = {
     const { refreshToken } = data;
 
     if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, "Invalid refresh token");
+      throw new AppError(400, 'Invalid refresh token');
     }
 
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
-      throw new AppError(401, "Invalid or expired refresh token");
+      throw new AppError(401, 'Invalid or expired refresh token');
     }
 
     const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
     if (!tokenRecord) {
-      throw new AppError(401, "Invalid or expired refresh token");
+      throw new AppError(401, 'Invalid or expired refresh token');
     }
 
     const user = await db.query.users.findFirst({
@@ -121,7 +125,7 @@ export const service = {
     });
 
     if (!user || user.tokenVersion !== payload.tokenVersion) {
-      throw new AppError(401, "Invalid or expired refresh token");
+      throw new AppError(401, 'Invalid or expired refresh token');
     }
 
     await userRepository.invalidateRefreshToken(refreshToken);
@@ -130,13 +134,13 @@ export const service = {
 
     const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(
       payload.userId,
-      updatedUser[0].tokenVersion
+      updatedUser[0].tokenVersion,
     );
 
     await userRepository.storeRefreshToken(
       payload.userId,
       newRefreshToken,
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
 
     return {

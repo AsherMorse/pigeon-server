@@ -1,6 +1,8 @@
-import { Router } from "express";
-import { controller } from "@auth";
-import { requireAuth } from "@shared";
+import { Router } from 'express';
+
+import { controller } from '@auth';
+
+import { requireAuth } from '@shared/middleware';
 
 export const routes = Router();
 
@@ -33,7 +35,7 @@ export const routes = Router();
  *       400:
  *         description: Invalid input
  */
-routes.post("/register", controller.register);
+routes.post('/register', controller.register);
 
 /**
  * @swagger
@@ -62,7 +64,7 @@ routes.post("/register", controller.register);
  *       401:
  *         description: Invalid credentials
  */
-routes.post("/login", controller.login);
+routes.post('/login', controller.login);
 
 /**
  * @swagger
@@ -88,7 +90,7 @@ routes.post("/login", controller.login);
  *       400:
  *         description: Invalid token
  */
-routes.post("/logout", controller.logout);
+routes.post('/logout', controller.logout);
 
 /**
  * @swagger
@@ -129,7 +131,7 @@ routes.post("/logout", controller.logout);
  *       401:
  *         description: Invalid or expired refresh token
  */
-routes.post("/refresh", controller.refreshToken);
+routes.post('/refresh', controller.refreshToken);
 
 /**
  * @swagger
@@ -145,11 +147,11 @@ routes.post("/refresh", controller.refreshToken);
  *       401:
  *         description: Unauthorized - invalid or expired session
  */
-routes.get("/session", requireAuth, (req, res) => {
+routes.get('/session', requireAuth, (req, res) => {
   res.json({
-    status: "success",
-    message: "Session is valid",
-    user: req.user
+    status: 'success',
+    message: 'Session is valid',
+    user: req.user,
   });
 });
 

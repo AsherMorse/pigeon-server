@@ -1,8 +1,10 @@
-import { eq, or, and, gt } from "drizzle-orm";
-import { db } from "@config/database";
-import type { RegisterDTO } from "@auth";
-import { refreshTokens, users } from "@db/schema";
-import { sql } from "drizzle-orm";
+import { eq, or, and, gt, sql } from 'drizzle-orm';
+
+import { db } from '@config/database';
+
+import { refreshTokens, users } from '@db/schema';
+
+import type { RegisterDTO } from '@auth';
 
 export const userRepository = {
   findByEmailOrUsername: async (credential: string) => {
@@ -22,7 +24,7 @@ export const userRepository = {
   create: async (
     userData: RegisterDTO & {
       hashedPassword: string;
-    }
+    },
   ) => {
     const [user] = await db
       .insert(users)
@@ -75,8 +77,8 @@ export const userRepository = {
       where: and(
         eq(refreshTokens.token, token),
         eq(refreshTokens.isValid, true),
-        gt(refreshTokens.expiresAt, new Date())
-      )
+        gt(refreshTokens.expiresAt, new Date()),
+      ),
     });
   },
 

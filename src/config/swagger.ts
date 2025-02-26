@@ -1,5 +1,5 @@
-import swaggerJSDoc from 'swagger-jsdoc';
 import dotenv from 'dotenv';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 dotenv.config();
 
@@ -32,4 +32,4 @@ const options = {
   apis: ['./src/features/*/routes.ts'],
 };
 
-export const swaggerSpec = swaggerJSDoc(options); 
+export const swaggerSpec = swaggerJSDoc(options);

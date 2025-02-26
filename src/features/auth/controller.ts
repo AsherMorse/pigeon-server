@@ -1,6 +1,8 @@
-import { Request, Response } from "express";
-import { service, validator } from "@auth";
-import { asyncErrorHandler } from "@shared";
+import { Request, Response } from 'express';
+
+import { service, validator } from '@auth';
+
+import { asyncErrorHandler } from '@shared/utils';
 
 export const controller = {
   register: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -8,8 +10,8 @@ export const controller = {
     const result = await service.register(data);
 
     res.status(201).json({
-      status: "success",
-      message: "Registration successful",
+      status: 'success',
+      message: 'Registration successful',
       data: result,
     });
   }),
@@ -19,7 +21,7 @@ export const controller = {
     const result = await service.login(data);
 
     res.json({
-      status: "success",
+      status: 'success',
       data: result,
     });
   }),
@@ -29,8 +31,8 @@ export const controller = {
     await service.logout(data);
 
     res.json({
-      status: "success",
-      message: "Logout successful",
+      status: 'success',
+      message: 'Logout successful',
     });
   }),
 
@@ -39,7 +41,7 @@ export const controller = {
     const result = await service.refreshToken(data);
 
     res.json({
-      status: "success",
+      status: 'success',
       data: result,
     });
   }),

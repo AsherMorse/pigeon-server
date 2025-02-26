@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Wraps an async Express route handler to automatically catch and forward errors to Express error handling middleware.
@@ -9,17 +9,9 @@ import { Request, Response, NextFunction } from "express";
  *
  */
 export const asyncErrorHandler = (
-  routeHandler: (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => Promise<any>
+  routeHandler: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
 ) => {
-  return async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ): Promise<void> => {
+  return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
       await routeHandler(request, response, next);
     } catch (error) {

@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+build
+.cursor
+.git
+drizzle
+*.d.ts
+*.js.map
+package-lock.json 
