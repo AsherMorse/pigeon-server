@@ -22,6 +22,10 @@ passport.use(
         return done(null, false);
       }
 
+      if (user.tokenVersion !== payload.tokenVersion) {
+        return done(new AppError(401, "Token invalidated"), false);
+      }
+
       return done(null, user);
     } catch (error) {
       return done(error, false);
@@ -32,6 +36,9 @@ passport.use(
 export const requireAuth = (req: any, res: any, next: any) => {
   passport.authenticate("jwt", { session: false }, (err: any, user: any) => {
     if (err) {
+      if (err instanceof AppError) {
+        return next(err);
+      }
       return next(new AppError(500, "Internal server error"));
     }
 
