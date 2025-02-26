@@ -19,6 +19,7 @@ export interface RefreshTokenDTO {
 
 export interface TokenPayload {
   userId: number;
+  tokenVersion?: number;
 }
 
 export interface AuthTokens {

@@ -2,11 +2,20 @@ import { eq, or, and, gt } from "drizzle-orm";
 import { db } from "../../../config/database";
 import type { RegisterDTO } from "../types/authTypes";
 import { refreshTokens, users } from "../../../db/schema";
+import { sql } from "drizzle-orm";
 
 export const userRepository = {
   findByEmailOrUsername: async (credential: string) => {
     return await db.query.users.findFirst({
       where: or(eq(users.email, credential), eq(users.username, credential)),
+      columns: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+        isVerified: true,
+        tokenVersion: true,
+      },
     });
   },
 
@@ -22,9 +31,27 @@ export const userRepository = {
         email: userData.email,
         password: userData.hashedPassword,
         isVerified: true,
+        // Default tokenVersion is 0 from schema definition
       })
-      .returning();
+      .returning({
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        isVerified: users.isVerified,
+        tokenVersion: users.tokenVersion,
+      });
     return user;
+  },
+
+  incrementTokenVersion: async (userId: number) => {
+    return await db
+      .update(users)
+      .set({
+        tokenVersion: sql`${users.tokenVersion} + 1`,
+      })
+      .where(eq(users.id, userId))
+      .returning();
   },
 
   storeRefreshToken: async (userId: number, token: string, expiresAt: Date) => {
