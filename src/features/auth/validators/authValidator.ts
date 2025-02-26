@@ -15,4 +15,8 @@ export const authValidator = {
   logout: z.object({
     refreshToken: z.string().min(1, "Refresh token is required"),
   }),
+
+  refreshToken: z.object({
+    refreshToken: z.string().min(1, "Refresh token is required"),
+  }),
 };

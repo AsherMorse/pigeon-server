@@ -13,6 +13,10 @@ export interface LogoutDTO {
   refreshToken: string;
 }
 
+export interface RefreshTokenDTO {
+  refreshToken: string;
+}
+
 export interface TokenPayload {
   userId: number;
 }

@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { eq } from "drizzle-orm";
 import { db } from "../../config/database";
-import type { TokenPayload } from "../../features/auth/types/auth.types";
+import type { TokenPayload } from "../../features/auth/types/authTypes";
 import { users } from "../../db/schema";
 import { AppError } from "./errorHandler";
 

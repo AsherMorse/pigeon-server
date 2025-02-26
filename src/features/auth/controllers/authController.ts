@@ -34,4 +34,14 @@ export const authController = {
       message: "Logout successful",
     });
   }),
+
+  refreshToken: asyncErrorHandler(async (req: Request, res: Response) => {
+    const data = authValidator.refreshToken.parse(req.body);
+    const result = await authService.refreshToken(data);
+
+    res.json({
+      status: "success",
+      data: result,
+    });
+  }),
 };

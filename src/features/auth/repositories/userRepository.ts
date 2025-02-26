@@ -1,6 +1,6 @@
-import { eq, or } from "drizzle-orm";
+import { eq, or, and, gt } from "drizzle-orm";
 import { db } from "../../../config/database";
-import type { RegisterDTO } from "../types/auth.types";
+import type { RegisterDTO } from "../types/authTypes";
 import { refreshTokens, users } from "../../../db/schema";
 
 export const userRepository = {
@@ -41,6 +41,19 @@ export const userRepository = {
       .set({ isValid: false })
       .where(eq(refreshTokens.token, token))
       .returning();
+  },
+
+  findValidRefreshToken: async (token: string) => {
+    return await db.query.refreshTokens.findFirst({
+      where: and(
+        eq(refreshTokens.token, token),
+        eq(refreshTokens.isValid, true),
+        gt(refreshTokens.expiresAt, new Date())
+      ),
+      with: {
+        user: true
+      }
+    });
   },
 
   updateVerification: async (userId: number) => {

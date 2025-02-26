@@ -5,7 +5,8 @@ import type {
   RegisterDTO,
   LoginDTO,
   LogoutDTO,
-} from "../types/auth.types";
+  RefreshTokenDTO,
+} from "../types/authTypes";
 import { AppError } from "../../../shared/middleware/errorHandler";
 
 export const authService = {
@@ -91,5 +92,45 @@ export const authService = {
     }
 
     return { success: true };
+  },
+
+  refreshToken: async (data: RefreshTokenDTO) => {
+    const { refreshToken } = data;
+
+    // Verify that the token format is valid
+    if (!refreshToken || typeof refreshToken !== 'string') {
+      throw new AppError(400, "Invalid refresh token");
+    }
+
+    // First verify the token using JWT
+    const payload = jwtConfig.verifyRefreshToken(refreshToken);
+    if (!payload) {
+      throw new AppError(401, "Invalid or expired refresh token");
+    }
+
+    // Then check if the token exists in the database and is still valid
+    const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
+    if (!tokenRecord) {
+      throw new AppError(401, "Invalid or expired refresh token");
+    }
+
+    // Invalidate the current refresh token to prevent reuse
+    await userRepository.invalidateRefreshToken(refreshToken);
+
+    // Generate new tokens
+    const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(payload.userId);
+
+    // Store the new refresh token
+    await userRepository.storeRefreshToken(
+      payload.userId,
+      newRefreshToken,
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    );
+
+    // Return the new tokens
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
   },
 };
