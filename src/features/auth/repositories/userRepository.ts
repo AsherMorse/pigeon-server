@@ -49,10 +49,7 @@ export const userRepository = {
         eq(refreshTokens.token, token),
         eq(refreshTokens.isValid, true),
         gt(refreshTokens.expiresAt, new Date())
-      ),
-      with: {
-        user: true
-      }
+      )
     });
   },
 
