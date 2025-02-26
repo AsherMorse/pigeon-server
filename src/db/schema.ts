@@ -22,5 +22,6 @@ export const refreshTokens = pgTable("refresh_tokens", {
   userId: serial("user_id").references(() => users.id),
   token: text("token").notNull().unique(),
   expiresAt: timestamp("expires_at").notNull(),
+  isValid: boolean("is_valid").default(true),
   createdAt: timestamp("created_at").defaultNow(),
 });

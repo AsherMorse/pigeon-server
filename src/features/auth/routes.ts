@@ -66,23 +66,49 @@ authRoutes.post("/login", authController.login);
 
 /**
  * @swagger
- * /api/auth/protected:
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: Refresh token to invalidate
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *       400:
+ *         description: Invalid token
+ */
+authRoutes.post("/logout", authController.logout);
+
+/**
+ * @swagger
+ * /api/auth/session:
  *   get:
- *     summary: Access protected route
+ *     summary: Check if user session is valid
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Protected data
+ *         description: Session is valid
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - invalid or expired session
  */
-// Protected test route
-authRoutes.get("/protected", requireAuth, (req, res) => {
+// Session validation route
+authRoutes.get("/session", requireAuth, (req, res) => {
   res.json({
     status: "success",
-    message: "You have access to protected data",
+    message: "Session is valid",
     user: req.user
   });
 });

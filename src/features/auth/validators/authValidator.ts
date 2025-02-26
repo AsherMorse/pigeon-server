@@ -11,4 +11,8 @@ export const authValidator = {
     credential: z.string(),
     password: z.string(),
   }),
+
+  logout: z.object({
+    refreshToken: z.string().min(1, "Refresh token is required"),
+  }),
 };

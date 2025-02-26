@@ -4,6 +4,7 @@ import { jwtConfig } from "../../../config/jwt";
 import type {
   RegisterDTO,
   LoginDTO,
+  LogoutDTO,
 } from "../types/auth.types";
 import { AppError } from "../../../shared/middleware/errorHandler";
 
@@ -69,5 +70,26 @@ export const authService = {
         email: user.email,
       },
     };
+  },
+
+  logout: async (data: LogoutDTO) => {
+    const { refreshToken } = data;
+
+    // Verify that the token format is valid before attempting to invalidate
+    if (!refreshToken || typeof refreshToken !== 'string') {
+      throw new AppError(400, "Invalid refresh token");
+    }
+
+    // Invalidate the refresh token
+    const result = await userRepository.invalidateRefreshToken(refreshToken);
+
+    // If the token wasn't found, it may already be invalid or never existed
+    if (!result || result.length === 0) {
+      // We don't reveal if the token existed or not to prevent information leakage
+      // Just return success
+      return { success: true };
+    }
+
+    return { success: true };
   },
 };

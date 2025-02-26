@@ -35,6 +35,14 @@ export const userRepository = {
     });
   },
 
+  invalidateRefreshToken: async (token: string) => {
+    return await db
+      .update(refreshTokens)
+      .set({ isValid: false })
+      .where(eq(refreshTokens.token, token))
+      .returning();
+  },
+
   updateVerification: async (userId: number) => {
     await db
       .update(users)

@@ -24,4 +24,14 @@ export const authController = {
       data: result,
     });
   }),
+
+  logout: asyncErrorHandler(async (req: Request, res: Response) => {
+    const data = authValidator.logout.parse(req.body);
+    await authService.logout(data);
+
+    res.json({
+      status: "success",
+      message: "Logout successful",
+    });
+  }),
 };

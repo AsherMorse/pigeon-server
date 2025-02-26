@@ -9,6 +9,10 @@ export interface LoginDTO {
   password: string;
 }
 
+export interface LogoutDTO {
+  refreshToken: string;
+}
+
 export interface TokenPayload {
   userId: number;
 }
