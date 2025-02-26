@@ -1,0 +1,9 @@
+.env
+node_modules
+package-lock.json
+drizzle
+logs/
+
+.cursor
+.DS_Store
+project.txt

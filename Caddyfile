@@ -1,0 +1,13 @@
+localhost, :80, :443 {
+	# Proxy all requests to the Express app
+	reverse_proxy localhost:8080
+
+	# Enable HTTPS (Caddy will automatically provision certificates)
+	# tls internal
+
+	# Logging
+	log {
+		output file ./logs/caddy_access.log
+		format console
+	}
+}
