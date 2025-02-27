@@ -27,11 +27,7 @@ app.use(passport.initialize());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// API Routes
 app.use(`/${API_VERSIONS.V1}/auth`, authRoutes);
-// When adding new route groups, follow this pattern:
-// app.use(`/${API_VERSIONS.V1}/users`, userRoutes);
-// app.use(`/${API_VERSIONS.V1}/posts`, postRoutes);
 
 app.use(errorHandler);
 
