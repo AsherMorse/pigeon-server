@@ -7,7 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import { routes } from '@auth';
 import { swaggerSpec } from '@config/swagger';
 import { errorHandler } from '@shared/middleware';
-import { API_VERSIONS, API_BASE_PATH } from '@shared/constants';
+import { API_VERSIONS } from '@shared/constants';
 
 dotenv.config();
 
@@ -27,7 +27,7 @@ app.use(passport.initialize());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(`${API_BASE_PATH}/${API_VERSIONS.V1}/auth`, routes);
+app.use(`/${API_VERSIONS.V1}/auth`, routes);
 
 app.use(errorHandler);
 

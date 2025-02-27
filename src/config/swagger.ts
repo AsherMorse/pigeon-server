@@ -32,10 +32,6 @@ const swaggerDefinition = {
       description: 'Authentication and authorization endpoints',
     },
   ],
-  externalDocs: {
-    description: 'API Version Information',
-    url: '#api-versions',
-  },
 };
 
 const options = {
