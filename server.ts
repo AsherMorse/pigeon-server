@@ -5,7 +5,7 @@ import express from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
 import { routes as authRoutes } from '@auth';
-import { swaggerSpec } from '@config/swagger';
+import { swaggerUiSetup } from '@config/swagger';
 import { API_VERSIONS } from '@shared/constants';
 import { errorHandler } from '@shared/middleware';
 
@@ -21,23 +21,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(passport.initialize());
 
-const swaggerUiOptions = {
-  customSiteTitle: 'Pigeon API Documentation',
-  swaggerOptions: {
-    filter: true,
-    displayRequestDuration: true,
-    docExpansion: 'list',
-    defaultModelsExpandDepth: 0,
-    showExtensions: true,
-  },
-  explorer: true,
-};
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
+app.use('/docs', swaggerUi.serve, swaggerUiSetup);
 
 app.use(`/${API_VERSIONS.V1}/auth`, authRoutes);
 
