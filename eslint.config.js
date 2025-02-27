@@ -6,7 +6,6 @@ import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 
-// Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -80,10 +79,8 @@ export default tseslint.config(
       ],
       'no-unused-vars': 'off',
 
-      // Console warnings
       'no-console': 'warn',
 
-      // File and function size limits
       'max-lines': [
         'warn',
         {
@@ -105,7 +102,6 @@ export default tseslint.config(
       'max-depth': ['warn', 4],
       complexity: ['warn', 15],
 
-      // Import order rules
       'import/order': [
         'error',
         {

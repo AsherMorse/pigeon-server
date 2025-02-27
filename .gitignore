@@ -2,7 +2,7 @@
 node_modules
 package-lock.json
 drizzle
-logs/
+*log*
 
 .cursor
 .DS_Store
