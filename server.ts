@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
-import { routes } from '@auth';
+import { routes as authRoutes } from '@auth';
 import { swaggerSpec } from '@config/swagger';
 import { errorHandler } from '@shared/middleware';
 import { API_VERSIONS } from '@shared/constants';
@@ -27,7 +27,11 @@ app.use(passport.initialize());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(`/${API_VERSIONS.V1}/auth`, routes);
+// API Routes
+app.use(`/${API_VERSIONS.V1}/auth`, authRoutes);
+// When adding new route groups, follow this pattern:
+// app.use(`/${API_VERSIONS.V1}/users`, userRoutes);
+// app.use(`/${API_VERSIONS.V1}/posts`, postRoutes);
 
 app.use(errorHandler);
 
