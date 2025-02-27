@@ -4,17 +4,25 @@ import { API_VERSIONS } from '@shared/constants';
 
 dotenv.config();
 
+const HOST_URL = process.env.HOST_URL || 'http://localhost:8080';
+const API_VERSION = API_VERSIONS.V1;
+const BASE_URL = `${HOST_URL}/${API_VERSION}`;
+
 const swaggerDefinition = {
   openapi: '3.1.0',
   info: {
     title: 'Pigeon API',
-    version: `${API_VERSIONS.V1}`,
-    description: 'API documentation for Pigeon application',
+    version: `${API_VERSION}`,
+    description: 'API documentation for Pigeon, a distance-delayed chat app for connecting with friends.',
+    license: {
+      name: 'MIT License',
+      url: 'https://opensource.org/licenses/MIT',
+    }
   },
   servers: [
     {
-      url: process.env.HOST_URL || 'http://localhost:8080',
-      description: 'Server',
+      url: BASE_URL,
+      description: `Pigeon API ${API_VERSION}`,
     },
   ],
   components: {

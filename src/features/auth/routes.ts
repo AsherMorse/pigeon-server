@@ -6,7 +6,7 @@ export const routes = Router();
 
 /**
  * @swagger
- * /v1/auth/register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -37,7 +37,7 @@ routes.post('/register', controller.register);
 
 /**
  * @swagger
- * /v1/auth/login:
+ * /auth/login:
  *   post:
  *     summary: Login user
  *     tags: [Auth]
@@ -66,7 +66,7 @@ routes.post('/login', controller.login);
 
 /**
  * @swagger
- * /v1/auth/logout:
+ * /auth/logout:
  *   post:
  *     summary: Logout user
  *     tags: [Auth]
@@ -92,7 +92,7 @@ routes.post('/logout', controller.logout);
 
 /**
  * @swagger
- * /v1/auth/refresh:
+ * /auth/refresh:
  *   post:
  *     summary: Refresh access token
  *     tags: [Auth]
@@ -133,7 +133,7 @@ routes.post('/refresh', controller.refreshToken);
 
 /**
  * @swagger
- * /v1/auth/session:
+ * /auth/session:
  *   get:
  *     summary: Check if user session is valid
  *     tags: [Auth]
