@@ -20,7 +20,11 @@ export const jwtConfig = {
 
   verifyAccessToken: (token: string) => {
     try {
-      return jwt.verify(token, ACCESS_TOKEN_SECRET) as { userId: string; tokenVersion?: number; jti?: string };
+      return jwt.verify(token, ACCESS_TOKEN_SECRET) as {
+        userId: string;
+        tokenVersion?: number;
+        jti?: string;
+      };
     } catch {
       return null;
     }
@@ -28,7 +32,11 @@ export const jwtConfig = {
 
   verifyRefreshToken: (token: string) => {
     try {
-      return jwt.verify(token, REFRESH_TOKEN_SECRET) as { userId: string; tokenVersion?: number; jti?: string };
+      return jwt.verify(token, REFRESH_TOKEN_SECRET) as {
+        userId: string;
+        tokenVersion?: number;
+        jti?: string;
+      };
     } catch {
       return null;
     }

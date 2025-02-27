@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { API_VERSIONS } from '@shared/constants';
+import { authComponents } from './authComponents';
 
 dotenv.config();
 
@@ -14,16 +15,16 @@ const swaggerDefinition = {
   info: {
     title: 'Pigeon API',
     version: API_VERSION,
-    description: 'API documentation for Pigeon, a distance-delayed chat app for connecting with friends.',
+    description:
+      'API documentation for Pigeon, a distance-delayed chat app for connecting with friends.',
     license: {
       name: 'MIT License',
       url: 'https://opensource.org/licenses/MIT',
-    }
+    },
   },
   servers: [
     {
       url: BASE_URL,
-      description: `Pigeon API ${API_VERSION}`,
     },
   ],
   components: {
@@ -34,6 +35,7 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
+    ...authComponents,
   },
   tags: [
     {
@@ -61,7 +63,7 @@ const swaggerUiOptions = {
     filter: true,
     displayRequestDuration: true,
     docExpansion: 'list',
-    defaultModelsExpandDepth: 0,
+    defaultModelsExpandDepth: -1,
     showExtensions: true,
   },
   explorer: true,

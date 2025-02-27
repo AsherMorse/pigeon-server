@@ -5,7 +5,7 @@ import express from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
 import { routes as authRoutes } from '@auth';
-import { swaggerUiSetup } from '@config/swagger';
+import { swaggerUiSetup } from '@/swagger/swagger';
 import { API_VERSIONS } from '@shared/constants';
 import { errorHandler } from '@shared/middleware';
 

@@ -24,7 +24,7 @@ passport.use(
       }
 
       if (user.tokenVersion !== payload.tokenVersion) {
-        return done(new AppError(401, 'Token invalidated'), false);
+        return done(new AppError(401, 'Token invalidated', undefined, 'INVALID_TOKEN'), false);
       }
 
       return done(null, user);
@@ -43,11 +43,11 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
         if (err instanceof AppError) {
           return next(err);
         }
-        return next(new AppError(500, 'Internal server error'));
+        return next(new AppError(500, 'Internal server error', undefined, 'INTERNAL_ERROR'));
       }
 
       if (!user) {
-        return next(new AppError(401, 'Unauthorized'));
+        return next(new AppError(401, 'Unauthorized', undefined, 'UNAUTHORIZED'));
       }
 
       req.user = user;

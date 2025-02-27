@@ -17,7 +17,7 @@ export const service = {
     const existingUser = await userRepository.findByEmailOrUsername(data.email);
     if (existingUser) {
       const field = existingUser.email === data.email ? 'email' : 'username';
-      throw new AppError(409, `This ${field} is already registered`);
+      throw new AppError(409, `This ${field} is already registered`, undefined, 'RESOURCE_EXISTS');
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -49,12 +49,12 @@ export const service = {
   login: async (data: LoginDTO) => {
     const user = await userRepository.findByEmailOrUsername(data.credential);
     if (!user) {
-      throw new AppError(401, 'Invalid credentials');
+      throw new AppError(401, 'Invalid credentials', undefined, 'INVALID_CREDENTIALS');
     }
 
     const isValidPassword = await bcrypt.compare(data.password, user.password);
     if (!isValidPassword) {
-      throw new AppError(401, 'Invalid credentials');
+      throw new AppError(401, 'Invalid credentials', undefined, 'INVALID_CREDENTIALS');
     }
 
     const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
@@ -80,7 +80,7 @@ export const service = {
     const { refreshToken } = data;
 
     if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token');
+      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
     }
 
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
@@ -103,17 +103,27 @@ export const service = {
     const { refreshToken } = data;
 
     if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token');
+      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
     }
 
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
-      throw new AppError(401, 'Invalid or expired refresh token');
+      throw new AppError(
+        401,
+        'Invalid or expired refresh token',
+        undefined,
+        'INVALID_REFRESH_TOKEN',
+      );
     }
 
     const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
     if (!tokenRecord) {
-      throw new AppError(401, 'Invalid or expired refresh token');
+      throw new AppError(
+        401,
+        'Invalid or expired refresh token',
+        undefined,
+        'INVALID_REFRESH_TOKEN',
+      );
     }
 
     const user = await db.query.users.findFirst({
@@ -121,7 +131,12 @@ export const service = {
     });
 
     if (!user || user.tokenVersion !== payload.tokenVersion) {
-      throw new AppError(401, 'Invalid or expired refresh token');
+      throw new AppError(
+        401,
+        'Invalid or expired refresh token',
+        undefined,
+        'INVALID_REFRESH_TOKEN',
+      );
     }
 
     await userRepository.invalidateRefreshToken(refreshToken);

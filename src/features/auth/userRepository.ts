@@ -64,7 +64,12 @@ export const userRepository = {
       const pgError = error as { code?: string; constraint?: string };
 
       if (pgError.code === '23505' && pgError.constraint === 'refresh_tokens_token_unique') {
-        throw new AppError(401, 'Session already exists. Please try again.');
+        throw new AppError(
+          401,
+          'Session already exists. Please try again.',
+          undefined,
+          'DUPLICATE_SESSION',
+        );
       }
 
       throw error;

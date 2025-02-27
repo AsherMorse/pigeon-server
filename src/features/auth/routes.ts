@@ -20,18 +20,25 @@ export const routes = Router();
  *               - username
  *               - email
  *               - password
- *             properties:
- *               username:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
+ *           examples:
+ *             Register:
+ *               value:
+ *                 username: john_doe
+ *                 email: john@example.com
+ *                 password: securePassword123
  *     responses:
- *       200:
+ *       201:
  *         description: Registration successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RegistrationSuccess'
  *       400:
- *         description: Invalid input
+ *         $ref: '#/components/responses/ValidationError'
+ *       409:
+ *         $ref: '#/components/responses/ResourceExistsError'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
  */
 routes.post('/register', controller.register);
 
@@ -50,17 +57,28 @@ routes.post('/register', controller.register);
  *             required:
  *               - credential
  *               - password
- *             properties:
- *               credential:
- *                 type: string
- *                 description: Email or username
- *               password:
- *                 type: string
+ *           examples:
+ *             Login with Email:
+ *               value:
+ *                 credential: john@example.com
+ *                 password: securePassword123
+ *             Login with Username:
+ *               value:
+ *                 credential: john_doe
+ *                 password: securePassword123
  *     responses:
  *       200:
  *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginSuccess'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
  *       401:
- *         description: Invalid credentials
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
  */
 routes.post('/login', controller.login);
 
@@ -78,15 +96,21 @@ routes.post('/login', controller.login);
  *             type: object
  *             required:
  *               - refreshToken
- *             properties:
- *               refreshToken:
- *                 type: string
- *                 description: Refresh token to invalidate
+ *           examples:
+ *             Logout:
+ *               value:
+ *                 refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LogoutSuccess'
  *       400:
- *         description: Invalid token
+ *         $ref: '#/components/responses/InvalidTokenError'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
  */
 routes.post('/logout', controller.logout);
 
@@ -104,30 +128,23 @@ routes.post('/logout', controller.logout);
  *             type: object
  *             required:
  *               - refreshToken
- *             properties:
- *               refreshToken:
- *                 type: string
- *                 description: Valid refresh token to get a new access token
+ *           examples:
+ *             Refresh Token:
+ *               value:
+ *                 refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
  *         description: Token refresh successful
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: success
- *                 data:
- *                   type: object
- *                   properties:
- *                     accessToken:
- *                       type: string
- *                     refreshToken:
- *                       type: string
+ *               $ref: '#/components/schemas/RefreshTokenSuccess'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
  *       401:
- *         description: Invalid or expired refresh token
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
  */
 routes.post('/refresh', controller.refreshToken);
 
@@ -142,15 +159,15 @@ routes.post('/refresh', controller.refreshToken);
  *     responses:
  *       200:
  *         description: Session is valid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SessionSuccess'
  *       401:
- *         description: Unauthorized - invalid or expired session
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
  */
-routes.get('/session', requireAuth, (req, res) => {
-  res.json({
-    status: 'success',
-    message: 'Session is valid',
-    user: req.user,
-  });
-});
+routes.get('/session', requireAuth, controller.session);
 
 export default routes;
