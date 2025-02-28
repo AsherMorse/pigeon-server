@@ -13,11 +13,11 @@ dotenv.config();
 
 const app = express();
 
-const HOST_URL = process.env.HOST_URL || 'http://localhost:3000';
 const corsOptions = {
-  origin: HOST_URL,
+  origin: true, // Allow mobile origin
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -31,11 +31,10 @@ app.use(`/${API_VERSIONS.V1}/auth`, authRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
+const HOST_URL = process.env.HOST_URL || 'http://localhost:3000';
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server running on port ${PORT}`);
   // eslint-disable-next-line no-console
   console.log(`Swagger UI available at ${HOST_URL}/docs`);
-  // eslint-disable-next-line no-console
-  console.log(`CORS enabled for origin: ${HOST_URL}`);
 });
