@@ -11,7 +11,7 @@ const API_VERSION = API_VERSIONS.V1;
 const BASE_URL = `${HOST_URL}/${API_VERSION}`;
 
 const swaggerDefinition = {
-  openapi: '3.1.0',
+  openapi: '3.0.0',
   info: {
     title: 'Pigeon API',
     version: API_VERSION,
