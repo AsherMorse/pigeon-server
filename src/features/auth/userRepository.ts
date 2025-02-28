@@ -1,5 +1,5 @@
 import { eq, or, and, gt, sql } from 'drizzle-orm';
-import { db } from '@config/database';
+import { db } from '@db';
 import { AppError } from '@shared/middleware/errorHandler';
 import { refreshTokens, users } from '@db/schema';
 import type { RegisterDTO } from '@auth';

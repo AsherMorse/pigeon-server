@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { db } from '@config/database';
+import { db } from '@db';
 import { AppError } from '@shared/middleware/errorHandler';
 import { users } from '@db/schema';
 import type { TokenPayload } from '@auth';

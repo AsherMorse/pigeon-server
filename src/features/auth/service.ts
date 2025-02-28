@@ -7,7 +7,7 @@ import {
   type LogoutDTO,
   type RefreshTokenDTO,
 } from '@auth';
-import { db } from '@config/database';
+import { db } from '@db';
 import { jwtConfig } from '@config/jwt';
 import { AppError } from '@shared/middleware/errorHandler';
 import { users } from '@db/schema';
