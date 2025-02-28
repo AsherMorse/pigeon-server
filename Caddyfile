@@ -1,13 +1,20 @@
-localhost, :80, :443 {
+api.pigeonapp.net {
 	# Proxy all requests to the Express app
 	reverse_proxy localhost:8080
 
-	# Enable HTTPS (Caddy will automatically provision certificates)
-	# tls internal
+	# Enable HTTPS with proper Cloudflare configuration
+	tls {
+		protocols tls1.2 tls1.3
+	}
 
 	# Logging
 	log {
 		output file ./logs/caddy_access.log
 		format console
 	}
+}
+
+# Local development server
+localhost {
+	reverse_proxy localhost:8080
 }
