@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 export interface OpenAPISchema {
   type?: string;
   properties?: Record<string, OpenAPISchema>;

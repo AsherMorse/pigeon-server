@@ -1,4 +1,3 @@
- 
 import { createSuccessSchema } from './coreComponents';
 
 const TOKEN_EXAMPLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';

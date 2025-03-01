@@ -1,25 +1,28 @@
-import multer from 'multer';
 import path from 'path';
-import { AppError } from '@shared/middleware/errorHandler';
+import multer from 'multer';
 import { createValidationError } from '@shared/utils/response';
 import type { Request } from 'express';
 
 const storage = multer.diskStorage({
-  destination: (_req: Request, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
+  destination: (
+    _req: Request,
+    _file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void,
+  ) => {
     cb(null, 'uploads/profiles');
   },
-  filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
+  filename: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void,
+  ) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const ext = path.extname(file.originalname);
     cb(null, `user_${req.user!.id}_profile_${uniqueSuffix}${ext}`);
   },
 });
 
-const fileFilter = (
-  _req: Request,
-  file: Express.Multer.File,
-  cb: multer.FileFilterCallback,
-) => {
+const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedMimes = ['image/jpeg', 'image/png'];
   if (allowedMimes.includes(file.mimetype)) {
     cb(null, true);

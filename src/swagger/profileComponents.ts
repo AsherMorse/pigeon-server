@@ -78,13 +78,13 @@ export const profileComponents = {
         properties: {
           success: {
             type: 'boolean',
-            example: true
-          }
-        }
+            example: true,
+          },
+        },
       },
       {
-        success: true
-      }
+        success: true,
+      },
     ),
   },
 };

@@ -1,3 +1,4 @@
+import path from 'path';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -8,7 +9,6 @@ import { routes as profileRoutes } from '@profile';
 import { API_VERSIONS } from '@shared/constants';
 import { errorHandler } from '@shared/middleware';
 import { swaggerUiSetup } from './src/swagger/swagger';
-import path from 'path';
 
 dotenv.config();
 
@@ -37,6 +37,8 @@ app.use(`/${API_VERSION}/profile`, profileRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server running on port ${PORT}`);
+  // eslint-disable-next-line no-console
   console.log(`Swagger UI available at ${HOST_URL}/docs`);
 });

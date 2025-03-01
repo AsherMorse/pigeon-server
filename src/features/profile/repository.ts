@@ -1,5 +1,5 @@
-import { eq } from 'drizzle-orm';
 import fs from 'fs/promises';
+import { eq } from 'drizzle-orm';
 import { db } from '@db';
 import { AppError } from '@shared/middleware/errorHandler';
 import { profiles } from '@db/schema';
@@ -82,7 +82,10 @@ export const repository = {
     return profile;
   },
 
-  updateProfile: async (userId: string, data: { imagePath: string | null; imageUrl: string | null }) => {
+  updateProfile: async (
+    userId: string,
+    data: { imagePath: string | null; imageUrl: string | null },
+  ) => {
     const [profile] = await db
       .update(profiles)
       .set({

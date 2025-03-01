@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { service, validator } from '@profile';
 import { asyncErrorHandler } from '@shared/utils';
 import { buildSuccessResponse, createValidationError } from '@shared/utils/response';
-import { AppError } from '@shared/middleware/errorHandler';
 
 export const controller = {
   getProfile: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -23,7 +22,7 @@ export const controller = {
         'image',
         'file_required',
         400,
-        'FILE_REQUIRED'
+        'FILE_REQUIRED',
       );
     }
 

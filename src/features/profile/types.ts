@@ -24,7 +24,7 @@ export interface DeleteImageDTO {
   userId: string;
 }
 
-export interface UploadedFile extends Express.Multer.File { }
+export type UploadedFile = Express.Multer.File;
 
 export interface UserAuth {
   id: string;

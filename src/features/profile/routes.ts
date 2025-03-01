@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import { requireAuth } from '@shared/middleware';
+import { requireAuth, uploadMiddleware } from '@shared/middleware';
 import { controller } from './index';
-import { uploadMiddleware } from './middleware';
 
 export const routes = Router();
 
