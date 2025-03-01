@@ -253,6 +253,55 @@ export const coreComponents = {
           ],
         },
       },
+      'File Required': {
+        value: {
+          status: 'error',
+          message: 'No image file uploaded',
+          code: 'FILE_REQUIRED',
+        },
+      },
+      'File Type Validation': {
+        value: {
+          status: 'error',
+          message: 'Invalid file type. Only JPEG and PNG are allowed',
+          code: 'VALIDATION_ERROR',
+          errors: [
+            {
+              field: 'image',
+              message: 'Invalid file type. Only JPEG and PNG are allowed',
+              code: 'invalid_file_type',
+            },
+          ],
+        },
+      },
+      'File Size Validation': {
+        value: {
+          status: 'error',
+          message: 'File size exceeds the 5MB limit',
+          code: 'VALIDATION_ERROR',
+          errors: [
+            {
+              field: 'image',
+              message: 'File size exceeds the 5MB limit',
+              code: 'file_too_large',
+            },
+          ],
+        },
+      },
+      'UUID Validation': {
+        value: {
+          status: 'error',
+          message: 'Invalid user ID format',
+          code: 'VALIDATION_ERROR',
+          errors: [
+            {
+              field: 'userId',
+              message: 'Invalid user ID format',
+              code: 'invalid_uuid',
+            },
+          ],
+        },
+      },
     }),
 
     UnauthorizedError: createErrorResponse('Unauthorized', 'UNAUTHORIZED', {

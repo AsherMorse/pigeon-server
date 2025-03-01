@@ -8,6 +8,7 @@ import { routes as profileRoutes } from '@profile';
 import { API_VERSIONS } from '@shared/constants';
 import { errorHandler } from '@shared/middleware';
 import { swaggerUiSetup } from './src/swagger/swagger';
+import path from 'path';
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ const API_VERSION = API_VERSIONS.V1;
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(passport.initialize());
+
+app.use('/uploads/profiles', express.static(path.join(__dirname, 'uploads/profiles')));
 
 app.use('/docs', swaggerUi.serve, swaggerUiSetup);
 app.use(`/${API_VERSION}/auth`, authRoutes);

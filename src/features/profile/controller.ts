@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { service, validator } from '@profile';
 import { asyncErrorHandler } from '@shared/utils';
-import { buildSuccessResponse } from '@shared/utils/response';
+import { buildSuccessResponse, createValidationError } from '@shared/utils/response';
 import { AppError } from '@shared/middleware/errorHandler';
 
 export const controller = {
@@ -18,7 +18,13 @@ export const controller = {
 
   uploadProfileImage: asyncErrorHandler(async (req: Request, res: Response) => {
     if (!req.file) {
-      throw new AppError(400, 'No image file uploaded', undefined, 'FILE_REQUIRED');
+      throw createValidationError(
+        'No image file uploaded',
+        'image',
+        'file_required',
+        400,
+        'FILE_REQUIRED'
+      );
     }
 
     validator.profileImage.parse({
@@ -32,6 +38,6 @@ export const controller = {
 
   deleteProfileImage: asyncErrorHandler(async (req: Request, res: Response) => {
     await service.deleteProfileImage(req.user!.id);
-    res.json(buildSuccessResponse('Profile image deleted successfully'));
+    res.json(buildSuccessResponse('Profile image removed successfully'));
   }),
 };

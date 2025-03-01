@@ -1,15 +1,12 @@
- 
-import { createSuccessSchema, UserObject } from './coreComponents';
+import { createSuccessSchema } from './coreComponents';
 
-// Example profile data
 const PROFILE_EXAMPLE = {
   userId: '12345abc-def6-7890',
-  imageUrl: '/uploads/profiles/user_12345abc-def6-7890_profile_1234567890.jpg',
+  imageUrl: '/uploads/profiles/user_12345abc-def6-7890_profile_1234567890.png',
   createdAt: '2023-01-01T00:00:00.000Z',
   updatedAt: '2023-01-01T00:00:00.000Z',
 };
 
-// Define the profile object schema
 const ProfileObject = {
   type: 'object',
   properties: {
@@ -22,17 +19,6 @@ const ProfileObject = {
       example: PROFILE_EXAMPLE.imageUrl,
       nullable: true,
     },
-    // Future fields
-    // name: {
-    //   type: 'string',
-    //   example: 'John Doe',
-    //   nullable: true,
-    // },
-    // bio: {
-    //   type: 'string',
-    //   example: 'I love chatting with friends!',
-    //   nullable: true,
-    // },
     createdAt: {
       type: 'string',
       format: 'date-time',
@@ -46,7 +32,6 @@ const ProfileObject = {
   },
 };
 
-// Export profile component schemas
 export const profileComponents = {
   schemas: {
     ProfileObject,
@@ -86,6 +71,20 @@ export const profileComponents = {
       },
     ),
 
-    ProfileImageDeleteSuccess: createSuccessSchema('Profile image removed successfully'),
+    ProfileImageDeleteSuccess: createSuccessSchema(
+      'Profile image removed successfully',
+      {
+        type: 'object',
+        properties: {
+          success: {
+            type: 'boolean',
+            example: true
+          }
+        }
+      },
+      {
+        success: true
+      }
+    ),
   },
 };

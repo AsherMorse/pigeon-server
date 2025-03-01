@@ -50,6 +50,8 @@ routes.get('/', requireAuth, controller.getProfile);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ProfileSuccess'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
  *       404:
  *         $ref: '#/components/responses/NotFoundError'
  *       500:

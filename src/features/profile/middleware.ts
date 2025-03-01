@@ -1,6 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import { AppError } from '@shared/middleware/errorHandler';
+import { createValidationError } from '@shared/utils/response';
 import type { Request } from 'express';
 
 const storage = multer.diskStorage({
@@ -19,11 +20,12 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback,
 ) => {
-  const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
+  const allowedMimes = ['image/jpeg', 'image/png'];
   if (allowedMimes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new AppError(400, 'Invalid file type. Only JPEG, PNG, and GIF are allowed'));
+    const errorMessage = 'Invalid file type. Only JPEG and PNG are allowed';
+    cb(createValidationError(errorMessage, 'image', 'invalid_file_type'));
   }
 };
 
