@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import {
-  userRepository,
+  repository,
   type RegisterDTO,
   type LoginDTO,
   type LogoutDTO,
@@ -14,26 +14,26 @@ import { users } from '@db/schema';
 
 export const service = {
   register: async (data: RegisterDTO) => {
-    const existingEmail = await userRepository.findByEmailOrUsername(data.email);
+    const existingEmail = await repository.findByEmailOrUsername(data.email);
     if (existingEmail) {
       throw new AppError(409, 'This email is already registered', undefined, 'RESOURCE_EXISTS');
     }
 
-    const existingUsername = await userRepository.findByEmailOrUsername(data.username);
+    const existingUsername = await repository.findByEmailOrUsername(data.username);
     if (existingUsername) {
       throw new AppError(409, 'This username is already registered', undefined, 'RESOURCE_EXISTS');
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    const user = await userRepository.create({
+    const user = await repository.create({
       ...data,
       hashedPassword,
     });
 
     const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
 
-    await userRepository.storeRefreshToken(
+    await repository.storeRefreshToken(
       user.id,
       refreshToken,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -51,7 +51,7 @@ export const service = {
   },
 
   login: async (data: LoginDTO) => {
-    const user = await userRepository.findByEmailOrUsername(data.credential);
+    const user = await repository.findByEmailOrUsername(data.credential);
     if (!user) {
       throw new AppError(401, 'Invalid credentials', undefined, 'INVALID_CREDENTIALS');
     }
@@ -63,7 +63,7 @@ export const service = {
 
     const { accessToken, refreshToken } = jwtConfig.generateTokens(user.id, user.tokenVersion);
 
-    await userRepository.storeRefreshToken(
+    await repository.storeRefreshToken(
       user.id,
       refreshToken,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -82,19 +82,13 @@ export const service = {
 
   logout: async (data: LogoutDTO) => {
     const { refreshToken } = data;
-
-    if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
-    }
-
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
       return { success: true };
     }
 
-    await userRepository.incrementTokenVersion(payload.userId);
-
-    const result = await userRepository.invalidateRefreshToken(refreshToken);
+    await repository.incrementTokenVersion(payload.userId);
+    const result = await repository.invalidateRefreshToken(refreshToken);
 
     if (!result || result.length === 0) {
       return { success: true };
@@ -105,11 +99,6 @@ export const service = {
 
   refreshToken: async (data: RefreshTokenDTO) => {
     const { refreshToken } = data;
-
-    if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
-    }
-
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
       throw new AppError(
@@ -120,7 +109,7 @@ export const service = {
       );
     }
 
-    const tokenRecord = await userRepository.findValidRefreshToken(refreshToken);
+    const tokenRecord = await repository.findValidRefreshToken(refreshToken);
     if (!tokenRecord) {
       throw new AppError(
         401,
@@ -143,16 +132,15 @@ export const service = {
       );
     }
 
-    await userRepository.invalidateRefreshToken(refreshToken);
-
-    const updatedUser = await userRepository.incrementTokenVersion(payload.userId);
+    await repository.invalidateRefreshToken(refreshToken);
+    const updatedUser = await repository.incrementTokenVersion(payload.userId);
 
     const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(
       payload.userId,
       updatedUser[0].tokenVersion,
     );
 
-    await userRepository.storeRefreshToken(
+    await repository.storeRefreshToken(
       payload.userId,
       newRefreshToken,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),

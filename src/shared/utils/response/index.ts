@@ -1,3 +1,4 @@
+import { AppError } from '@shared/middleware/errorHandler';
 import { ApiSuccessResponse, ApiErrorResponse, ErrorDetail } from '@shared/types/api-response';
 
 export const buildSuccessResponse = <T = unknown>(
@@ -40,4 +41,25 @@ export const buildErrorResponse = (
   }
 
   return response;
+};
+
+export const createValidationError = (
+  message: string,
+  field: string,
+  errorCode: string = 'invalid_value',
+  statusCode: number = 400,
+  customCode: string = 'VALIDATION_ERROR',
+): AppError => {
+  return new AppError(
+    statusCode,
+    message,
+    [
+      {
+        field,
+        message,
+        code: errorCode,
+      },
+    ],
+    customCode,
+  );
 };

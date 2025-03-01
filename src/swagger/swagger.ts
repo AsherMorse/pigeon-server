@@ -3,6 +3,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { API_VERSIONS } from '@shared/constants';
 import { authComponents } from './authComponents';
+import { coreComponents } from './coreComponents';
+import { profileComponents } from './profileComponents';
 
 dotenv.config();
 
@@ -28,6 +30,12 @@ const swaggerDefinition = {
     },
   ],
   components: {
+    schemas: {
+      ...coreComponents.schemas,
+      ...authComponents.schemas,
+      ...profileComponents.schemas,
+    },
+    responses: coreComponents.responses,
     securitySchemes: {
       bearerAuth: {
         type: 'http',
@@ -35,12 +43,15 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
-    ...authComponents,
   },
   tags: [
     {
       name: 'Auth',
       description: 'Authentication and authorization endpoints',
+    },
+    {
+      name: 'Profile',
+      description: 'User profile management endpoints',
     },
   ],
 };

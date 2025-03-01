@@ -4,7 +4,7 @@ import { AppError } from '@shared/middleware/errorHandler';
 import { refreshTokens, users } from '@db/schema';
 import type { RegisterDTO } from '@auth';
 
-export const userRepository = {
+export const repository = {
   findByEmailOrUsername: async (credential: string) => {
     return await db.query.users.findFirst({
       where: or(eq(users.email, credential), eq(users.username, credential)),
@@ -50,7 +50,12 @@ export const userRepository = {
           throw new AppError(409, 'This email is already registered', undefined, 'RESOURCE_EXISTS');
         }
         if (pgError.constraint === 'users_username_unique') {
-          throw new AppError(409, 'This username is already registered', undefined, 'RESOURCE_EXISTS');
+          throw new AppError(
+            409,
+            'This username is already registered',
+            undefined,
+            'RESOURCE_EXISTS',
+          );
         }
       }
 

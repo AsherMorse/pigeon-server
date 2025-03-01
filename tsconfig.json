@@ -12,7 +12,9 @@
       "@shared/*": ["src/shared/*"],
       "@shared": ["src/shared"],
       "@db/*": ["src/db/*"],
-      "@db": ["src/db"]
+      "@db": ["src/db"],
+      "@profile/*": ["src/features/profile/*"],
+      "@profile": ["src/features/profile"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
