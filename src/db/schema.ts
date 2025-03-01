@@ -31,8 +31,12 @@ export const refreshTokens = pgTable('refresh_tokens', {
 
 export const profiles = pgTable('profiles', {
   id: uuid('id').defaultRandom().primaryKey(),
-  userId: uuid('user_id').references(() => users.id).notNull().unique(),
+  userId: uuid('user_id')
+    .references(() => users.id)
+    .notNull()
+    .unique(),
   imageUrl: text('image_url'),
+  imagePath: text('image_path'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });

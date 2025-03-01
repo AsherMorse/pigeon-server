@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { controller } from './index';
 import { requireAuth } from '@shared/middleware';
+import { controller } from './index';
+import { uploadMiddleware } from './middleware';
 
 export const routes = Router();
 
@@ -39,7 +40,8 @@ routes.get('/', requireAuth, controller.getProfile);
  *         name: userId
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         description: ID of the user whose profile to retrieve
  *     responses:
  *       200:
@@ -90,7 +92,7 @@ routes.get('/:userId', controller.getUserProfile);
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-routes.post('/image', requireAuth, controller.uploadProfileImage);
+routes.post('/image', requireAuth, uploadMiddleware, controller.uploadProfileImage);
 
 /**
  * @swagger

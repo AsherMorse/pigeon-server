@@ -1,31 +1,31 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 
 export interface ProfileDTO {
+  id: string;
   userId: string;
-  imageUrl?: string | null;
-  createdAt?: Date;
-  updatedAt?: Date;
+  imageUrl: string | null;
+  imagePath: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 
 export interface CreateProfileDTO {
   userId: string;
   imageUrl?: string | null;
+  imagePath?: string | null;
 }
 
 export interface UpdateProfileDTO {
   imageUrl?: string | null;
-}
-
-export interface UploadImageDTO {
-  userId: string;
-  file: any; // Use any for now until we add proper multer types
+  imagePath?: string | null;
 }
 
 export interface DeleteImageDTO {
   userId: string;
 }
 
-// User type as expected by the auth system
+export interface UploadedFile extends Express.Multer.File { }
+
 export interface UserAuth {
   id: string;
   username: string;
@@ -37,7 +37,10 @@ export interface UserAuth {
   updatedAt: Date | null;
 }
 
-// Extended request with authenticated user
-export interface ProfileRequestWithUser extends Request {
+export interface RequestWithFile extends Request {
+  file?: Express.Multer.File;
+}
+
+export interface ProfileRequestWithUser extends RequestWithFile {
   user: UserAuth;
-} 
+}

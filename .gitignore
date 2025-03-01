@@ -8,3 +8,8 @@ drizzle
 .DS_Store
 project.txt
 test*
+
+dist
+coverage
+uploads/profiles/*
+!uploads/profiles/.gitkeep

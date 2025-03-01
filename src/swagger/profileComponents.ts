@@ -1,8 +1,5 @@
-/* eslint-disable max-lines */
-import {
-  createSuccessSchema,
-  UserObject,
-} from './coreComponents';
+ 
+import { createSuccessSchema, UserObject } from './coreComponents';
 
 // Example profile data
 const PROFILE_EXAMPLE = {
@@ -89,8 +86,6 @@ export const profileComponents = {
       },
     ),
 
-    ProfileImageDeleteSuccess: createSuccessSchema(
-      'Profile image removed successfully',
-    ),
+    ProfileImageDeleteSuccess: createSuccessSchema('Profile image removed successfully'),
   },
-}; 
+};

@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
-import { API_VERSIONS } from '@shared/constants';
 import { routes as authRoutes } from '@auth';
 import { routes as profileRoutes } from '@profile';
+import { API_VERSIONS } from '@shared/constants';
 import { errorHandler } from '@shared/middleware';
 import { swaggerUiSetup } from './src/swagger/swagger';
 

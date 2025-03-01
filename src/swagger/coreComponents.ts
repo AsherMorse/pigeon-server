@@ -333,4 +333,4 @@ export const coreComponents = {
       },
     }),
   },
-}; 
+};

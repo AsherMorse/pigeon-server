@@ -30,6 +30,12 @@ const swaggerDefinition = {
     },
   ],
   components: {
+    schemas: {
+      ...coreComponents.schemas,
+      ...authComponents.schemas,
+      ...profileComponents.schemas,
+    },
+    responses: coreComponents.responses,
     securitySchemes: {
       bearerAuth: {
         type: 'http',
@@ -37,9 +43,6 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
-    ...coreComponents,
-    ...authComponents,
-    ...profileComponents,
   },
   tags: [
     {

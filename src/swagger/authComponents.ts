@@ -1,7 +1,5 @@
-/* eslint-disable max-lines */
-import {
-  createSuccessSchema,
-} from './coreComponents';
+ 
+import { createSuccessSchema } from './coreComponents';
 
 const TOKEN_EXAMPLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 const USER_EXAMPLE = {
@@ -70,4 +68,4 @@ export const authComponents = {
       USER_EXAMPLE,
     ),
   },
-}; 
+};
