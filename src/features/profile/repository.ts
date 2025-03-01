@@ -7,12 +7,6 @@ export const repository = {
   findByUserId: async (userId: string) => {
     return await db.query.profiles.findFirst({
       where: eq(profiles.userId, userId),
-      columns: {
-        userId: true,
-        imageUrl: true,
-        createdAt: true,
-        updatedAt: true,
-      },
     });
   },
 

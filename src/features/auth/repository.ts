@@ -8,14 +8,6 @@ export const repository = {
   findByEmailOrUsername: async (credential: string) => {
     return await db.query.users.findFirst({
       where: or(eq(users.email, credential), eq(users.username, credential)),
-      columns: {
-        id: true,
-        username: true,
-        email: true,
-        password: true,
-        isVerified: true,
-        tokenVersion: true,
-      },
     });
   },
 
@@ -33,14 +25,7 @@ export const repository = {
           password: userData.hashedPassword,
           isVerified: true,
         })
-        .returning({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-          password: users.password,
-          isVerified: users.isVerified,
-          tokenVersion: users.tokenVersion,
-        });
+        .returning();
       return user;
     } catch (error) {
       const pgError = error as { code?: string; constraint?: string };
