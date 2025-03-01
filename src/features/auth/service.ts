@@ -14,10 +14,14 @@ import { users } from '@db/schema';
 
 export const service = {
   register: async (data: RegisterDTO) => {
-    const existingUser = await userRepository.findByEmailOrUsername(data.email);
-    if (existingUser) {
-      const field = existingUser.email === data.email ? 'email' : 'username';
-      throw new AppError(409, `This ${field} is already registered`, undefined, 'RESOURCE_EXISTS');
+    const existingEmail = await userRepository.findByEmailOrUsername(data.email);
+    if (existingEmail) {
+      throw new AppError(409, 'This email is already registered', undefined, 'RESOURCE_EXISTS');
+    }
+
+    const existingUsername = await userRepository.findByEmailOrUsername(data.username);
+    if (existingUsername) {
+      throw new AppError(409, 'This username is already registered', undefined, 'RESOURCE_EXISTS');
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);

@@ -24,23 +24,38 @@ export const userRepository = {
       hashedPassword: string;
     },
   ) => {
-    const [user] = await db
-      .insert(users)
-      .values({
-        username: userData.username,
-        email: userData.email,
-        password: userData.hashedPassword,
-        isVerified: true,
-      })
-      .returning({
-        id: users.id,
-        username: users.username,
-        email: users.email,
-        password: users.password,
-        isVerified: users.isVerified,
-        tokenVersion: users.tokenVersion,
-      });
-    return user;
+    try {
+      const [user] = await db
+        .insert(users)
+        .values({
+          username: userData.username,
+          email: userData.email,
+          password: userData.hashedPassword,
+          isVerified: true,
+        })
+        .returning({
+          id: users.id,
+          username: users.username,
+          email: users.email,
+          password: users.password,
+          isVerified: users.isVerified,
+          tokenVersion: users.tokenVersion,
+        });
+      return user;
+    } catch (error) {
+      const pgError = error as { code?: string; constraint?: string };
+
+      if (pgError.code === '23505') {
+        if (pgError.constraint === 'users_email_unique') {
+          throw new AppError(409, 'This email is already registered', undefined, 'RESOURCE_EXISTS');
+        }
+        if (pgError.constraint === 'users_username_unique') {
+          throw new AppError(409, 'This username is already registered', undefined, 'RESOURCE_EXISTS');
+        }
+      }
+
+      throw error;
+    }
   },
 
   incrementTokenVersion: async (userId: string) => {
