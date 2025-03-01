@@ -8,9 +8,7 @@ import { profileComponents } from './profileComponents';
 
 dotenv.config();
 
-const HOST_URL = process.env.HOST_URL || 'http://localhost:8080';
 const API_VERSION = API_VERSIONS.V1;
-const BASE_URL = `${HOST_URL}/${API_VERSION}`;
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -26,7 +24,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: BASE_URL,
+      url: API_VERSION,
     },
   ],
   components: {
