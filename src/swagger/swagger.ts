@@ -3,6 +3,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { API_VERSIONS } from '@shared/constants';
 import { authComponents } from './authComponents';
+import { coreComponents } from './coreComponents';
+import { profileComponents } from './profileComponents';
 
 dotenv.config();
 
@@ -35,12 +37,18 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
+    ...coreComponents,
     ...authComponents,
+    ...profileComponents,
   },
   tags: [
     {
       name: 'Auth',
       description: 'Authentication and authorization endpoints',
+    },
+    {
+      name: 'Profile',
+      description: 'User profile management endpoints',
     },
   ],
 };

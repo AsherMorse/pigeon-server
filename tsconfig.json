@@ -4,15 +4,39 @@
     "module": "NodeNext",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@auth/*": ["src/features/auth/*"],
-      "@auth": ["src/features/auth"],
-      "@config/*": ["src/config/*"],
-      "@config": ["src/config"],
-      "@shared/*": ["src/shared/*"],
-      "@shared": ["src/shared"],
-      "@db/*": ["src/db/*"],
-      "@db": ["src/db"]
+      "@/*": [
+        "src/*"
+      ],
+      "@auth/*": [
+        "src/features/auth/*"
+      ],
+      "@auth": [
+        "src/features/auth"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@config": [
+        "src/config"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@shared": [
+        "src/shared"
+      ],
+      "@db/*": [
+        "src/db/*"
+      ],
+      "@db": [
+        "src/db"
+      ],
+      "@profile/*": [
+        "src/features/profile/*"
+      ],
+      "@profile": [
+        "src/features/profile"
+      ]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

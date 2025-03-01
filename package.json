@@ -20,6 +20,7 @@
   "_moduleAliases": {
     "@": "src",
     "@auth": "src/features/auth",
+    "@profile": "src/features/profile",
     "@config": "src/config",
     "@shared": "src/shared",
     "@db": "src/db"
