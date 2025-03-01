@@ -5,13 +5,13 @@ import { buildSuccessResponse, createValidationError } from '@shared/utils/respo
 
 export const controller = {
   getProfile: asyncErrorHandler(async (req: Request, res: Response) => {
-    const result = await service.getProfile(req.user!.id);
+    const result = await service.getProfileByUserId(req.user!.id);
     res.json(buildSuccessResponse('Profile retrieved successfully', result));
   }),
 
   getUserProfile: asyncErrorHandler(async (req: Request, res: Response) => {
     const { userId } = validator.userId.parse(req.params);
-    const result = await service.getUserProfile(userId);
+    const result = await service.getProfileByUserId(userId);
     res.json(buildSuccessResponse('Profile retrieved successfully', result));
   }),
 
@@ -37,6 +37,6 @@ export const controller = {
 
   deleteProfileImage: asyncErrorHandler(async (req: Request, res: Response) => {
     await service.deleteProfileImage(req.user!.id);
-    res.json(buildSuccessResponse('Profile image removed successfully'));
+    res.json(buildSuccessResponse('Profile image removed successfully', { success: true }));
   }),
 };

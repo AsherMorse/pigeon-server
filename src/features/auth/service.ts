@@ -82,18 +82,12 @@ export const service = {
 
   logout: async (data: LogoutDTO) => {
     const { refreshToken } = data;
-
-    if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
-    }
-
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
       return { success: true };
     }
 
     await repository.incrementTokenVersion(payload.userId);
-
     const result = await repository.invalidateRefreshToken(refreshToken);
 
     if (!result || result.length === 0) {
@@ -105,11 +99,6 @@ export const service = {
 
   refreshToken: async (data: RefreshTokenDTO) => {
     const { refreshToken } = data;
-
-    if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new AppError(400, 'Invalid refresh token', undefined, 'INVALID_TOKEN');
-    }
-
     const payload = jwtConfig.verifyRefreshToken(refreshToken);
     if (!payload) {
       throw new AppError(
@@ -144,7 +133,6 @@ export const service = {
     }
 
     await repository.invalidateRefreshToken(refreshToken);
-
     const updatedUser = await repository.incrementTokenVersion(payload.userId);
 
     const { accessToken, refreshToken: newRefreshToken } = jwtConfig.generateTokens(

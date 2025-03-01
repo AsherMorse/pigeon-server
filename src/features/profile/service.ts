@@ -6,21 +6,11 @@ import { repository } from './repository';
 import type { UploadedFile } from './types';
 
 export const service = {
-  getProfile: async (userId: string) => {
+  getProfileByUserId: async (userId: string) => {
     const profile = await repository.findByUserId(userId);
     if (!profile) {
       throw new AppError(404, 'Profile not found', undefined, 'RESOURCE_NOT_FOUND');
     }
-
-    return profile;
-  },
-
-  getUserProfile: async (userId: string) => {
-    const profile = await repository.findByUserId(userId);
-    if (!profile) {
-      throw new AppError(404, 'Profile not found', undefined, 'RESOURCE_NOT_FOUND');
-    }
-
     return profile;
   },
 
@@ -30,7 +20,6 @@ export const service = {
     });
 
     if (existingProfile?.imagePath) {
-      // Delete old image file if it exists
       await repository.deleteImageFile(existingProfile.imagePath);
     }
 
@@ -54,10 +43,7 @@ export const service = {
     }
 
     await repository.deleteImageFile(profile.imagePath);
-    await repository.updateProfile(userId, {
-      imagePath: null,
-      imageUrl: null,
-    });
+    await repository.delete(userId);
 
     return { success: true };
   },

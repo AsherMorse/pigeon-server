@@ -38,21 +38,8 @@ export const profileComponents = {
 
     ProfileSuccess: createSuccessSchema(
       'Profile retrieved successfully',
-      {
-        type: 'object',
-        properties: {
-          user: { $ref: '#/components/schemas/UserObject' },
-          profile: { $ref: '#/components/schemas/ProfileObject' },
-        },
-      },
-      {
-        user: {
-          id: '12345abc-def6-7890',
-          username: 'user123',
-          email: 'user@example.com',
-        },
-        profile: PROFILE_EXAMPLE,
-      },
+      { $ref: '#/components/schemas/ProfileObject' },
+      PROFILE_EXAMPLE,
     ),
 
     ProfileImageSuccess: createSuccessSchema(
@@ -76,15 +63,10 @@ export const profileComponents = {
       {
         type: 'object',
         properties: {
-          success: {
-            type: 'boolean',
-            example: true,
-          },
+          success: { type: 'boolean', example: true },
         },
       },
-      {
-        success: true,
-      },
+      { success: true },
     ),
   },
 };
