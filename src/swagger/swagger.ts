@@ -64,9 +64,6 @@ const swaggerUiOptions = {
   customCss: `
     .swagger-ui .topbar { display: none }
     .swagger-ui .info .title { font-size: 2.5em; }
-    .swagger-ui .servers-title { display: block; margin: 20px 0 5px 0; font-size: 1.2em; font-weight: bold; }
-    .swagger-ui .servers { padding: 10px; background-color: #f0f0f0; border-radius: 4px; }
-    .swagger-ui .info .base-url { font-size: 1.2em; font-weight: bold; display: block; margin: 10px 0; }
   `,
   swaggerOptions: {
     filter: true,
