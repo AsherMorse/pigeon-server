@@ -4,9 +4,13 @@ export interface ProfileDTO {
   id: string;
   userId: string;
   imageUrl: string | null;
-  imagePath: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
+}
+
+// Internal DTO that includes imagePath
+export interface ProfileInternalDTO extends ProfileDTO {
+  imagePath: string | null;
 }
 
 export interface CreateProfileDTO {

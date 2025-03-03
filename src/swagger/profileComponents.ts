@@ -1,8 +1,9 @@
 import { createSuccessSchema } from './coreComponents';
 
 const PROFILE_EXAMPLE = {
+  id: '04868b58-f5b8-46d6-afd1-2dfd4395f464',
   userId: '12345abc-def6-7890',
-  imageUrl: '/uploads/profiles/user_12345abc-def6-7890_profile_1234567890.png',
+  imageUrl: 'https://api.example.com/uploads/profiles/user_12345abc-def6-7890_profile_1234567890.png',
   createdAt: '2023-01-01T00:00:00.000Z',
   updatedAt: '2023-01-01T00:00:00.000Z',
 };
@@ -10,13 +11,21 @@ const PROFILE_EXAMPLE = {
 const ProfileObject = {
   type: 'object',
   properties: {
+    id: {
+      type: 'string',
+      format: 'uuid',
+      example: PROFILE_EXAMPLE.id,
+    },
     userId: {
       type: 'string',
+      format: 'uuid',
       example: PROFILE_EXAMPLE.userId,
     },
     imageUrl: {
       type: 'string',
+      format: 'uri',
       example: PROFILE_EXAMPLE.imageUrl,
+      description: 'Full URL to the profile image',
       nullable: true,
     },
     createdAt: {
@@ -50,6 +59,7 @@ export const profileComponents = {
           imageUrl: {
             type: 'string',
             example: PROFILE_EXAMPLE.imageUrl,
+            description: 'Full URL to the uploaded profile image',
           },
         },
       },
