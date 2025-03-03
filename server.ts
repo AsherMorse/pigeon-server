@@ -30,9 +30,9 @@ app.use(passport.initialize());
 
 app.use('/uploads/profiles', express.static(path.join(__dirname, 'uploads/profiles')));
 
-app.use('/docs', swaggerUi.serve, swaggerUiSetup);
 app.use(`/${API_VERSION}/auth`, authRoutes);
 app.use(`/${API_VERSION}/profile`, profileRoutes);
+app.use('/docs', swaggerUi.serve, swaggerUiSetup);
 
 app.use(errorHandler);
 

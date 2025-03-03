@@ -24,7 +24,8 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: API_VERSION,
+      url: `/${API_VERSION}`,
+      description: 'API server',
     },
   ],
   components: {
